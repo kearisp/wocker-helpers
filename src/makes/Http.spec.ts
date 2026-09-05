@@ -3,14 +3,14 @@ import {Http, HttpResponseException} from "./Http";
 
 
 describe("Http", () => {
-    let fetchMock: jest.Mock<any>;
+    let fetchMock: jest.Mock<typeof fetch>;
 
     function fail(message: string) {
         throw new Error(message);
     }
 
     beforeEach(() => {
-        fetchMock = jest.fn<any>() as any;
+        fetchMock = jest.fn<typeof fetch>();
         global.fetch = fetchMock as any;
     });
 
@@ -161,9 +161,9 @@ describe("Http", () => {
     });
 
     it("should handle timeout", async () => {
-        fetchMock.mockImplementation((url: string, init: any) => {
+        fetchMock.mockImplementation((url, init) => {
             return new Promise((resolve, reject) => {
-                if(init.signal) {
+                if(init?.signal) {
                     if(init.signal.aborted) {
                         reject(new Error("Aborted"));
                         return;
