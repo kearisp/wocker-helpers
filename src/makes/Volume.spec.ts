@@ -20,6 +20,22 @@ describe("Volume", () => {
             expect(volume.options).toBe("ro");
         });
 
+        it("should parse Windows drive path source", () => {
+            const volume = Volume.parse("C:\\Users\\me\\data:/dest:ro");
+
+            expect(volume.source).toBe("C:\\Users\\me\\data");
+            expect(volume.destination).toBe("/dest");
+            expect(volume.options).toBe("ro");
+            expect(Volume.parse("C:/data:/dest").source).toBe("C:/data");
+        });
+
+        it("should treat a single-letter name as a named volume when no drive path fits", () => {
+            const volume = Volume.parse("c:/data");
+
+            expect(volume.source).toBe("c");
+            expect(volume.destination).toBe("/data");
+        });
+
         it("should throw error for invalid format", () => {
             expect(() => Volume.parse("invalid")).toThrow("Invalid volume format for volume \"invalid\"");
         });
@@ -45,6 +61,13 @@ describe("Volume", () => {
             expect(new Volume("./data", "/data").isHostPath()).toBe(true);
             expect(new Volume("../data", "/data").isHostPath()).toBe(true);
             expect(new Volume("~/data", "/data").isHostPath()).toBe(true);
+        });
+
+        it("should recognize Windows paths", () => {
+            expect(new Volume("C:\\data", "/data").isHostPath()).toBe(true);
+            expect(new Volume("c:/data", "/data").isHostPath()).toBe(true);
+            expect(new Volume(".\\data", "/data").isHostPath()).toBe(true);
+            expect(new Volume("\\\\server\\share", "/data").isHostPath()).toBe(true);
         });
 
         it("should not recognize named Docker volumes", () => {

@@ -1,5 +1,5 @@
 export class Volume {
-    public static readonly REGEX = /^([^:]+):([^:]+)(?::([^:]+))?$/;
+    public static readonly REGEX = /^((?:[A-Za-z]:[\\/])?[^:]+):([^:]+)(?::([^:]+))?$/;
 
     public constructor(
         public source: string,
@@ -8,7 +8,7 @@ export class Volume {
     ) {}
 
     public isHostPath(): boolean {
-        return /^(\/|\.{1,2}\/|~)/.test(this.source);
+        return /^(\/|\.{1,2}[\\/]|~|[A-Za-z]:[\\/]|\\\\)/.test(this.source);
     }
 
     public toString(): string {
