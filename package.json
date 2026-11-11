@@ -1,7 +1,7 @@
 {
     "name": "@wocker/helpers",
     "type": "commonjs",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "description": "Helpers for @wocker",
     "license": "MIT",
@@ -27,10 +27,6 @@
         "test": "jest",
         "test-watch": "jest --watchAll",
         "make-coverage-badge": "make-coverage-badge"
-    },
-    "dependencies": {
-        "ansi-escapes": "^4.3.2",
-        "yoctocolors-cjs": "^2.1.3"
     },
     "devDependencies": {
         "@types/jest": "^30.0.0",
